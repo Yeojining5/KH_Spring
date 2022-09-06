@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%!
+// 디클러레이션 - 클래스 선언, 메소드 선언
+// text_jsp.java - 클래스이름 바뀐다.
+// 프로젝트를 배포하는 서버마다 클래스이름의 명명규칙이 다르다?
+// 우리가 인스턴스화 한다?? 난 코린인데!!
+// 넌 인스턴스화 하지 말아라 = 메모리관리 책임은 스프링이 책임져줄게
+// 자원관리를 프레임워크에게 맡긴다.
+// 클래스이름은 누가 결정해야 할까? -> 업무구현할 개발자가 결정해야 함
+// 제어역전(Ioc : Inversion of Controll) -> 경험이 많은 친구에게 맡기겠다
+		class Sonata {
+	
+		}
+%>
+<%
+	Sonata myCar = new Sonata();
+	out.print(myCar);
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>

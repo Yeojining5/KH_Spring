@@ -1,0 +1,68 @@
+package com.spring4.mvc;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+// ApplicationContext vs BeanFactory -> 컨테이너의 종류
+import org.springframework.core.io.ClassPathResource;
+
+import com.di.Sonata;
+
+public class SonataSimulation {
+	
+	// 게으른 인스턴스화 - 시점에 대한 문제
+	// 언제 초기화가 되나?
+//	Sonata myCar = null;
+	
+	// 이른 인스턴스화
+//	Sonata herCar = new Sonata();
+	
+	void methodA() {
+		//System.out.println(herCar.speed);
+		
+		// 게으른 인스턴스화! -> 이것을 스프링이 해준다는 것
+//		myCar = new Sonata();
+//		System.out.println(myCar.speed);
+	}
+	
+	public static void main(String[] args) {
+		
+		// 객체 생성
+		// 개발자가 라이프 사이클 관리하기 - 왜냐하면 직접 new를 사용해서 인스턴스화를 함
+		// 스프링으로 부터 빈(bean:클래스임)을 관리받지 않은 코드임
+		// 스프링으로 객체의 라이프사이클을 관리 받으려면 xml문서에 등록하거나
+		// 최근에는 어노테이션을 지원하고 있다. - spring boot
+		// 어노테이션은 자바 코드에 작성하고
+		// 그렇지 않은 경우이거나 이종간의 주입에 대해서는 xml로 처리할 수 있다.
+		// 이종간 언어에는 myBatis와 오라클
+		// 누가 연계에 필요한 자바 코드를 지원해야 하는 걸까요?
+		// myBatis와 오라클 쪽에서 지원해야 하나?
+		// 자신들의 속내용이나 코드가 노출되지 않도록...
+		Sonata yourCar = new Sonata(); // 여기의 주소번지와
+		
+		// 객체 소멸
+		yourCar = null; //candidate 상태로 전환되는 코드임. null로 초기화 한 후 
+		yourCar = new Sonata(); // 다시 인스턴스화 - 새로 주소번지 채번이 된다
+		
+		// 스프링에서는 xml문서에 선언된 클래스 정보를 얻어와서 자바코드에 쓸 수 잇또록
+		// 제공하는 클래스가 있음
+		ApplicationContext context 
+		= new ClassPathXmlApplicationContext("com\\spring4\\mvc\\sonataBean.xml");
+		
+		Sonata myCar = (Sonata)context.getBean("myCar");
+		Sonata myCar2 = (Sonata)context.getBean("herCar"); // 인스턴스화 대신임!!
+		System.out.println(myCar == myCar2); // t:싱글톤
+		
+		// scope를 prototype으로 한  경우임
+		Sonata himCar = (Sonata)context.getBean("himCar");
+		Sonata himCar2 = (Sonata)context.getBean("himCar");
+		System.out.println(himCar == himCar2); // f:prototype
+		
+		BeanFactory factory = 
+				new XmlBeanFactory(new ClassPathResource("com\\di\\sonataBean.xml"));
+		Sonata meCar = (Sonata)factory.getBean("myCar");
+		System.out.println("meCar : "+meCar);
+	}
+
+}

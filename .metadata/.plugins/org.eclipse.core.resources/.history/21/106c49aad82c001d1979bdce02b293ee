@@ -1,0 +1,25 @@
+package com.spring4.mvc;
+
+public class SonataSimulation {
+	
+	// 게으른 인스턴스화 - 시점에 대한 문제
+	// 언제 초기화가 되나?
+	Sonata myCar = null;
+	
+	// 이른 인스턴스화
+	Sonata herCar = new Sonata();
+	
+	void methodA() {
+		//System.out.println(herCar.speed);
+		
+		// 게으른 인스턴스화! -> 이것을 스프링이 해준다는 것
+		myCar = new Sonata();
+		System.out.println(myCar.speed);
+	}
+	
+	public static void main(String[] args) {
+		SonataSimulation ss = new SonataSimulation();
+		ss.methodA();
+	}
+
+}

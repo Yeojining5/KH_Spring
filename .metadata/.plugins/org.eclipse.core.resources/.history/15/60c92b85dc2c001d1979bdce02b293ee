@@ -1,0 +1,48 @@
+package com.spring4.mvc;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class SonataSimulation {
+	
+	// 게으른 인스턴스화 - 시점에 대한 문제
+	// 언제 초기화가 되나?
+//	Sonata myCar = null;
+	
+	// 이른 인스턴스화
+//	Sonata herCar = new Sonata();
+	
+	void methodA() {
+		//System.out.println(herCar.speed);
+		
+		// 게으른 인스턴스화! -> 이것을 스프링이 해준다는 것
+//		myCar = new Sonata();
+//		System.out.println(myCar.speed);
+	}
+	
+	public static void main(String[] args) {
+		SonataSimulation ss = new SonataSimulation();
+//		ss.methodA();
+		ApplicationContext context 
+		= new ClassPathXmlApplicationContext("com\\spring4\\mvc\\sonataBean.xml");
+		Sonata myCar = (Sonata)context.getBean("myCar");
+		
+		System.out.println(myCar);
+		System.out.println(myCar.speed);
+		System.out.println(myCar.carName);
+		System.out.println("객체관리 책임이 개발자에게 있는 경우");
+		System.out.println("-----------------------------------------------");
+		myCar = new Sonata();
+		System.out.println(myCar);
+		System.out.println(myCar.speed);
+		System.out.println(myCar.carName);
+		
+		// Candidate 상태에 빠짐 - 34번에서 생성된 객체는 쓰레기값으로 인식되어 자원을 회수 당함
+		myCar = null;
+		myCar = new Sonata();
+		System.out.println("null초기화 후에 비교 " + myCar);
+		System.out.println(myCar.speed);
+		System.out.println(myCar.carName);
+	}
+
+}
