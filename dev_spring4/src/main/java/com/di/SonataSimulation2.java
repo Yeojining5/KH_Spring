@@ -28,8 +28,8 @@ public class SonataSimulation2 {
 		// 제공하는 클래스가 있음
 		ApplicationContext context 
 		= new ClassPathXmlApplicationContext("com\\spring4\\mvc\\sonataBean.xml");
-		Sonata2 myCar = (Sonata2)context.getBean("myCar");
-		Sonata2 herCar = (Sonata2)context.getBean("herCar"); // 인스턴스화 대신임!!
+		Sonata myCar = (Sonata)context.getBean("myCar");
+		Sonata herCar = (Sonata)context.getBean("herCar"); // 인스턴스화 대신임!!
 		// 어, 그런데 생성자가 여러개 잖아??
 		// 이런 경우 그 중에 누가 호출되나요?
 		System.out.println(herCar.speed); // 0
@@ -42,7 +42,7 @@ public class SonataSimulation2 {
 		System.out.println("객체관리 책임이 개발자에게 있는 경우");
 		System.out.println("-----------------------------------------------");
 		
-		myCar = new Sonata2();
+		myCar = new Sonata();
 		System.out.println(myCar);
 		System.out.println(myCar.speed);
 		System.out.println(myCar.carName);
@@ -50,7 +50,7 @@ public class SonataSimulation2 {
 		
 		// Candidate 상태에 빠짐 - 34번에서 생성된 객체는 쓰레기값으로 인식되어 자원을 회수 당함
 		myCar = null;
-		myCar = new Sonata2();
+		myCar = new Sonata();
 		System.out.println("null초기화 후에 비교 " + myCar);
 		System.out.println(myCar.speed);
 		System.out.println(myCar.carName);

@@ -30,25 +30,34 @@ public class SonataSimulation {
 		// myBatis와 오라클 쪽에서 지원해야 하나?
 		// 자신들의 속내용이나 코드가 노출되지 않도록...
 		// myBatis는 프레임워크 인가? 아님 라이브러리인가?
-		Sonata yourCar = new Sonata();//여기의 주소번지와
+		Sonata_2 yourCar = new Sonata_2();//여기의 주소번지와
+		System.out.println(yourCar);
+		
 		//객체 소멸
 		yourCar = null;//candidate상태로 전환되는코드임. null로 초기화 한 후
-		yourCar = new Sonata();//다시 인스턴스화 - 새로 주소번지 채번이 된다
+		yourCar = new Sonata_2();//다시 인스턴스화 - 새로 주소번지 채번이 된다
+		System.out.println(yourCar);
+		
 		// yourCar == yourCar => false
 		ApplicationContext context = 
 				new ClassPathXmlApplicationContext("com\\di\\sonataBean.xml");
 		//scope를 생략한 경우임
 		//<bean id="myCar" class="com.di.Sonata"/>
-		Sonata myCar = (Sonata)context.getBean("myCar");
-		Sonata myCar2 = (Sonata)context.getBean("myCar");
+		Sonata_2 myCar = (Sonata_2)context.getBean("myCar");
+		System.out.println(myCar);
+		myCar = null; // null을 준다 -> 연결고리를 끊어버림-갖고놀 수 없다-제어권이없다
+		myCar = (Sonata_2)context.getBean("myCar");
+		System.out.println(myCar);
+		
+		Sonata_2 myCar2 = (Sonata_2)context.getBean("myCar");
 		System.out.println(myCar == myCar2);//t:싱글톤
 		//scope를 prototyp으로 한 경우임
-		Sonata himCar = (Sonata)context.getBean("himCar");
-		Sonata himCar2 = (Sonata)context.getBean("himCar");	
+		Sonata_2 himCar = (Sonata_2)context.getBean("himCar");
+		Sonata_2 himCar2 = (Sonata_2)context.getBean("himCar");	
 		System.out.println(himCar == himCar2);//f:prototype
 		BeanFactory factory = 
 				new XmlBeanFactory(new ClassPathResource("com\\di\\sonataBean.xml"));
-		Sonata meCar = (Sonata)factory.getBean("myCar");
+		Sonata_2 meCar = (Sonata_2)factory.getBean("myCar");
 		System.out.println(myCar == meCar);//f
 	}
 
