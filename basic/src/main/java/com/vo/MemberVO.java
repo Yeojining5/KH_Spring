@@ -1,15 +1,12 @@
 package com.vo;
 
 public class MemberVO {
-
-	private int mem_no         = 0;
-	private String mem_id          = null;
-	private String mem_pw          = null;
-	private String mem_name        = null;
-	private String mem_zipcode     = null;
-	private String mem_address     = null;
-	
-	
+	private int    mem_no      =0; 
+	private String mem_id      =null; 
+	private String mem_pw      =null; 
+	private String mem_name    =null; 
+	private String mem_zipcode =null; 
+	private String mem_address =null;
 	public int getMem_no() {
 		return mem_no;
 	}
@@ -45,9 +42,5 @@ public class MemberVO {
 	}
 	public void setMem_address(String mem_address) {
 		this.mem_address = mem_address;
-	}
-	
-	
-	
+	} 
 }
-

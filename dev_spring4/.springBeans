@@ -9,8 +9,11 @@
 	<configs>
 		<config>src/main/webapp/WEB-INF/spring-servlet.xml</config>
 		<config>src/main/java/com/di/sonataBean.xml</config>
+		<config>src/main/java/com/di/duckBean.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/main/webapp/WEB-INF/spring-service.xml</config>
+		<config>src/main/webapp/WEB-INF/spring-data.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>
