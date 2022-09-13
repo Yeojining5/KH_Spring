@@ -1,8 +1,0 @@
-package com.vo;
-
-@Configuration
-public class AppContext {
-	public DeptVO getDeptvo() {
-		
-	}
-}
