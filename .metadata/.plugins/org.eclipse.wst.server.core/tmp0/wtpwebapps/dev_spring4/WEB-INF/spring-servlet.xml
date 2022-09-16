@@ -14,11 +14,31 @@
 			</list>
 		</property>
 	</bean>
+	<bean name="/di/insaMap.sp" class="com.di.MapController">
+	<!-- property의 이름은 setter메소드이름과 반드시(꼭) 같아야 한다 -->
+		<property name="insaMsg">
+			<map>
+				<entry>
+					<key><value>one</value></key>
+					<value>안녕!</value>
+				</entry>
+				<entry>
+					<key><value>two</value></key>
+					<value>좋은아침입니다</value>
+				</entry>
+				<entry>
+					<key><value>three</value></key>
+					<value>굿밤</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
 	<bean id="url-mapping"
 			class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 			<property name="mappings">
 				<props>
 					<prop key="/login.sp">auth-controller</prop>
+					<prop key="/doEmp.sp">emp-controller</prop>
 				</props>
 			</property>
 	</bean>				
@@ -31,6 +51,18 @@
 		<property name="mappings">
 			<props>
 				<prop key="/login.sp">login</prop>
+			</props>
+		</property>
+	</bean>	
+  	<bean id="emp-controller" class="com.spring4.tr.EmpController">
+		<property name="methodNameResolver" ref="emp-resolver"/>
+		<!-- property의 name은 setter객체주입법 코드의 이름이어야 합니다. -->
+		<property name="empLogic" ref="emp-logic"/>
+  	</bean>
+	<bean id="emp-resolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/doEmp.sp">doEmp</prop>
 			</props>
 		</property>
 	</bean>	
