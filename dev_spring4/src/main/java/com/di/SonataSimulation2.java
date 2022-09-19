@@ -33,19 +33,19 @@ public class SonataSimulation2 {
 		// 어, 그런데 생성자가 여러개 잖아??
 		// 이런 경우 그 중에 누가 호출되나요?
 		System.out.println(herCar.speed); // 0
-		System.err.println(herCar.carName); // null
+//		System.err.println(herCar.carName); // null
 		System.err.println(herCar.carColor); // null
 		
 		System.out.println(myCar);
 		System.out.println(myCar.speed);
-		System.out.println(myCar.carName);
+//		System.out.println(myCar.carName);
 		System.out.println("객체관리 책임이 개발자에게 있는 경우");
 		System.out.println("-----------------------------------------------");
 		
 		myCar = new Sonata();
 		System.out.println(myCar);
 		System.out.println(myCar.speed);
-		System.out.println(myCar.carName);
+//		System.out.println(myCar.carName);
 		System.out.println("-----------------------------------------------");
 		
 		// Candidate 상태에 빠짐 - 34번에서 생성된 객체는 쓰레기값으로 인식되어 자원을 회수 당함
@@ -53,7 +53,7 @@ public class SonataSimulation2 {
 		myCar = new Sonata();
 		System.out.println("null초기화 후에 비교 " + myCar);
 		System.out.println(myCar.speed);
-		System.out.println(myCar.carName);
+//		System.out.println(myCar.carName);
 	
 	}
 

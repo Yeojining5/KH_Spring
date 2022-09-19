@@ -19,7 +19,8 @@ public class EmpLogic {
 		this.empDao = empDao;
 	}
 	//@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
-	public int doEmp() {
+	//public int doEmp() { // 한번에 커밋하시오...
+		public int cudEmp() { // 건건이 커밋하시오...
 		logger.info("doEmp 호출");
 		Map<String,Object> emap = new HashMap<>();
 		emap.put("empno", 9005);

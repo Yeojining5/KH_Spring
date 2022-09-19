@@ -26,8 +26,23 @@
 	expression(* com.mvc.*Logic.*(..))
 	-> return type이 any type이고 0개 이상의 any type parameter를 가진
 	클래스 이름이 Logic으로 끝나고 메소드이름은 모든 메소드에 대해서 적용됨
+	
+	하나 로직 -> 두개 혹은 세개의 Dao[DML-i, u, d]호출이 연계
+	pointcut - 어디에서? - 정규식으로 처리함 -> 메소등 위에 직접 처리함(간단)
+	공통된 관심사 - XXXLogic - 비즈니스로직 - if, for, choice 2개이상의 DAO method call - 건건이 commit, 한번 커밋
+	con.setAutocommit(false) con.commit(), con.rollback(), con.setAutocommit(true); 매번(주문관리, 재고관리, 결제관리 ..) 반복된다
+	자바코드로 하지 말자 - xml로 하자! - 자바(annotation)
+	
+	* com.spring4.tr.*Logic.*(..)
+	advisor - 무엇을 할 것인가?
+	
  -->	
 	
+	<bean id="afterThrowing" class="com.spring4.tr.AfterThrowingAdvice"></bean>
+	
+	<bean id="board-Logic" class="com.spring4.mvc.BoardLogic">
+		<property name="boardDao" ref="board-dao" />
+	</bean>
 	
 	<bean id="auth-logic" class="com.spring4.mvc.AuthLogic">
 		<property name="authDao" ref="auth-dao" />
@@ -39,13 +54,23 @@
 		<property name="empDao" ref="emp-dao" />
 		<property name="deptDao" ref="dept-dao" />
 	</bean>
+	
+	<!-- 트랜잭션 처리 설정 시작 -->
 	<aop:config>
 		<aop:pointcut id="point-cut" expression="execution(* com.spring4.tr.*Logic.*(..))" />
 		<aop:advisor advice-ref="tx-advice" pointcut-ref="point-cut"/>
+		
+		<aop:aspect ref="afterThrowing">
+			<aop:after method="exceptionMsg" pointcut-ref="point-cut"/>
+		</aop:aspect>
 	</aop:config>
+	
 	<tx:advice id="tx-advice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="do*" />
+			<tx:method name="cud*" />
 		</tx:attributes>
 	</tx:advice>
+	<!-- 트랜잭션 처리 설정 끝 -->
+
 </beans>
