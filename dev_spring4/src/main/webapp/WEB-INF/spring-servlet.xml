@@ -92,6 +92,14 @@
 			</props>
 		</property>
 	</bean>	
+	<bean name="multipartResolver"
+		class="">
+		<property name="mappings">
+			<props>
+				<prop key="/doEmp.sp">doEmp</prop>
+			</props>
+		</property>
+	</bean>	
 	<!-- ModelAndView 사용시 배포 위치에 대한 선언 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />

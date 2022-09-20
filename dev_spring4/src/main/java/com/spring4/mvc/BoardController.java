@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.google.gson.Gson;
+import com.util.HashMapBinder;
 
 // 여기선 어노테이션 사용하지 않는다.
 // req와 res를 주입받기 위해서는 MultiActionController를 상속받아야 한다(for 웹서비스)
@@ -43,19 +44,27 @@ public class BoardController extends MultiActionController {
 		//model.addAttribute("boardList", boardList);//scope:request
 		req.setAttribute("boardList", boardList);
 		logger.info(boardList);
-		return "forward:list.jsp";
+		return "forward:boardList.jsp";
 	}
 	
 	public String boardDetail(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("boardDetail호출 성공");
 		Map<String,Object> pMap = new HashMap<>();
-		boardLogic.boardDetail(pMap);
+		HashMapBinder hmb = new HashMapBinder(req);
+		hmb.bind(pMap);
+		
+		List<Map<String,Object>> boardList = null; 
+		boardList = boardLogic.boardDetail(pMap);
+		req.setAttribute("boardList", boardList);
 		return "forward:read.jsp";
 	}
 	
 	public String boardInsert(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("boardInsert호출 성공");
 		Map<String,Object> pMap = new HashMap<>();
+		HashMapBinder hmb = new HashMapBinder(req);
+		//hmb.bind(pMap);
+		hmb.multiBind(pMap);
 		boardLogic.boardInsert(pMap);
 		//redirect -> forward는 문제 없지만, forward -> forward는 에러가 발생하기 때문
 		return "redirect:boardList.sp";
@@ -64,6 +73,8 @@ public class BoardController extends MultiActionController {
 	public String boardUpdate(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("boardUpdate호출 성공");
 		Map<String,Object> pMap = new HashMap<>();
+		HashMapBinder hmb = new HashMapBinder(req);
+		hmb.bind(pMap);
 		boardLogic.boardUpdate(pMap);
 		//redirect -> forward는 문제 없지만, forward -> forward는 에러가 발생하기 때문
 		return "redirect:boardList.sp";
@@ -72,6 +83,8 @@ public class BoardController extends MultiActionController {
 	public String boardDelete(HttpServletRequest req, HttpServletResponse res) {
 		logger.info("boardDelete호출 성공");
 		Map<String,Object> pMap = new HashMap<>();
+		HashMapBinder hmb = new HashMapBinder(req);
+		hmb.bind(pMap);
 		boardLogic.boardDelete(pMap);
 		//redirect -> forward는 문제 없지만, forward -> forward는 에러가 발생하기 때문
 		return "redirect:boardList.sp";
