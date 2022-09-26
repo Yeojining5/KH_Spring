@@ -14,7 +14,7 @@ import com.example.demo.logic.MemoLogic;
 
 @Service
 public class MemoDao {
-	Logger logger = LoggerFactory.getLogger(MemberDao.class);
+	Logger logger = LoggerFactory.getLogger(MemoDao.class);
 	
 	@Autowired(required=false)
 	private SqlSessionTemplate sqlSessionTemplate = null;
@@ -23,16 +23,27 @@ public class MemoDao {
 		logger.info("memoinsert 호출 성공 ==> "+ pMap);//101
 		int result = 0;
 		try {
-			sqlSessionTemplate.selectOne("proc_memoinsert", pMap);
-			if(pMap.get("result")!=null) {
-				result = Integer.parseInt(pMap.get("result").toString());				
-			}
-			// insert here
-			logger.info("result : "+result);
+			sqlSessionTemplate.update("memoInsert", pMap);
+			logger.info("result : "+result);				
+			
 		} catch (DataAccessException e) {
 			logger.info("Exception : "+e.toString());
 		} 
 		return result;
+	}
+
+	public List<Map<String, Object>> sendMemoList(Map<String, Object> pMap) {
+		logger.info("sendMemoList 호출 성공 ==> "+ pMap);
+		List<Map<String, Object>> sendMemoList = null;
+		sendMemoList = sqlSessionTemplate.selectList("sendMemoList", pMap);
+		return sendMemoList;
+	}
+
+	public List<Map<String, Object>> receiveMemoList(Map<String, Object> pMap) {
+		logger.info("receiveMemoList 호출 성공 ==> "+ pMap);
+		List<Map<String, Object>> receiveMemoList = null;
+		receiveMemoList = sqlSessionTemplate.selectList("receiveMemoList", pMap);
+		return receiveMemoList;
 	}
 	
 }

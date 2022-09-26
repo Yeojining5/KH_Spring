@@ -5,12 +5,31 @@
 <head>
 <meta charset="UTF-8">
 <title>회원등록</title>
+<style>
+	fieldset {
+        width: 600px;
+      }
+      label {
+        width: 80px;
+        display:inline-block;
+        text-align: center;
+      }
+      .form-example {
+        margin-top: 10px;
+      }
+      #btn_auth {
+      	margin: 20px;
+      	text-align: right;
+      }
+</style>
 <%@ include file="../common/easyui_common.jsp" %>
 <script>
 	function choice(zipcode, address) {
 		console.log(zipcode);
-		$("#_easysui_textbox_input4").val(zipcode);
-		$("#_easysui_textbox_input5").val(address);
+		$("#_easyui_textbox_input4").val(zipcode);
+		$("#_easyui_textbox_input5").val(address);
+		$("input[name=mem_zipcode]").val(zipcode);
+		$("input[name=mem_address]").val(address);
 		$("#dlg_zipcode").dialog('close');
 	}
 
@@ -22,7 +41,7 @@
 			  url: "/zipcode/zipcodeList?dong="+u_dong
 			  ,method:"GET"
 			  ,success:function(data){
-						  alert(data);
+						  //alert(data);
 						  $("#d_zipcode").html(data);
 			  }
 			});
@@ -50,31 +69,42 @@
 </head>
 <body>
 	<fieldset>
-		<div style="margin: 5px 0;"></div>
-			Home > 회원관리 > 회원등록
+		<legend>MemberShip</legend>
+		<div align="right">Home > 회원관리 > 회원등록</div>
 		<hr>
-		<div style="margin: 20px 0;"></div>
 		<div>
 			<form id="f_member" method="get" action="/member/memberInsert">
-				<label for="mem_id">아이디</label>
-			<input id="mem_id" name="mem_id" class="easyui-textbox" style="width:100px"/>
-			<br>
-			<label for="mem_pw">비 번</label>
-			<input id="mem_pw" name="mem_pw" class="easyui-textbox" style="width:100px"/>
-			<br>
-			<label for="mem_name">이  름</label>
-			<input id="mem_name" name="mem_name" class="easyui-textbox" style="width:100px"/>
-			<br>
-			<label for="mem_zipcode">우편번호</label>
-			<input id="mem_zipcode" name="mem_zipcode" style="width:100px"/>
-			<a href="javascript:searchForm()" class="easyui-linkbutton">우편번호찾기</a>
-			<br>
-			<label for="mem_address">주  소</label>
-			<input id="mem_address" name="mem_address" style="width:100px"/>
-			<br>
+				<div class="form-example">
+					<label for="mem_id">아이디</label>
+				<input id="mem_id" name="mem_id" class="easyui-textbox" style="width:100px"/>
+				</div>
+				
+				<div class="form-example">
+					<label for="mem_pw">비 번</label>
+					<input id="mem_pw" name="mem_pw" class="easyui-textbox" style="width:100px"/>
+				</div>
+				
+				<div class="form-example">
+					<label for="mem_name">이  름</label>
+					<input id="mem_name" name="mem_name" class="easyui-textbox" style="width:100px"/>
+				</div>
+				
+				<div class="form-example">
+					<label for="mem_zipcode">우편번호</label>
+					<input id="mem_zipcode" name="mem_zipcode" class="easyui-textbox" style="width:100px"/>
+					<a href="javascript:searchForm()" class="easyui-linkbutton">우편번호찾기</a>
+				</div>
+				
+				<div class="form-example">
+					<label for="mem_address">주  소</label>
+					<input id="mem_address" name="mem_address" class="easyui-textbox" style="width:300px"/>
+				</div>
 			</form>
 			
-			<a href="javascript:memberShip()" class="easyui-linkbutton">가입</a>
+			<div id="btn_auth" class="form-example">
+				<a href="javascript:memberShip()" class="easyui-linkbutton">가입</a>
+			</div>
+			
 		</div>
 	</fieldset>
 	

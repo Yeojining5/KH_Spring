@@ -11,16 +11,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.logic.MemoLogic;
+import com.example.demo.vo.MemberVO;
 
 @Service
 public class MemberDao {
-	Logger logger = LoggerFactory.getLogger(MemoDao.class);
+	Logger logger = LoggerFactory.getLogger(MemberDao.class);
 	
 	@Autowired(required=false)
 	private SqlSessionTemplate sqlSessionTemplate = null;
 
 	public int memberinsert(Map<String, Object> pMap) {
-		logger.info("memberinsert 호출 성공 ==> "+ pMap);//101
+		logger.info("memberinsert 호출성공 ==> "+ pMap);//101
 		int result = 0;
 		try {
 			sqlSessionTemplate.selectOne("proc_memberinsert", pMap);
@@ -34,5 +35,21 @@ public class MemberDao {
 		} 
 		return result;
 	}
+
+	public MemberVO login(Map<String, Object> pMap) {
+		logger.info("login 호출성공");
+		MemberVO mVO = null;
+		mVO = sqlSessionTemplate.selectOne("login", pMap);
+		
+		return mVO;
+	}
+
+	public List<Map<String, Object>> memberList(Map<String, Object> pMap) {
+		logger.info("memberList 호출성공");
+		List<Map<String, Object>> memberList = null;
+		memberList = sqlSessionTemplate.selectList("memberList", pMap);
+		return memberList;
+	}
+
 	
 }

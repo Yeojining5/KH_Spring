@@ -8,6 +8,19 @@
 <%@ include file="../common/easyui_common.jsp" %>
 </head>
 <body>
+
+<script type="text/javascript">
+	// 엔터키 눌렀을 때 주소 찾기
+	$(document).ready(function(){
+		var t = $('#dong');
+		t.textbox('textbox').bind('keydown', function(e){
+			if(e.keyCode == 13){
+				zipcodeSearch();
+			}
+		});
+	});
+</script>
+
 	<div>
 		<label for="dong">동이름 입력</label>
 		<input id="dong" name="dong" class="easyui-textbox" style="width:300px"/>

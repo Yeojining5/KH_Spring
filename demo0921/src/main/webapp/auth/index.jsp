@@ -4,17 +4,9 @@
 
 <%
 	//세션에서 가져오기
-	MemberVO mVO = (MemberVO)session.getAttribute("mVO");
-	String s_id = null;
-	String s_name = null;
-	
-	// NullPointerException 방지
-	if(mVO != null) {
-		s_id = mVO.getMem_id();
-		s_name = mVO.getMem_name();
-	}
-	
-	out.print(s_id+", "+s_name);
+	String smem_id = (String)session.getAttribute("smem_id");
+	String smem_name = (String)session.getAttribute("smem_name");
+	out.print(smem_id+", "+smem_name);
 %>
 <!DOCTYPE html>
 <html>
@@ -29,6 +21,8 @@
 	</style>
 	
 	<script type="text/javascript">
+		let to_id; // 받는사람 아이디 - 사용자가 입력하는 것이X, 쪽지쓰기 로우에서 자동으로 담기
+		let to_name; // 받는사람 이름
 	/*************************************/
 	// 함수 선언은 head 태그 안에서 한다
 	// easyui_common.jsp
@@ -43,9 +37,9 @@
 		}
 	/*************************************/
 		function login(){
-			const tb_id = $("#mem_id").val();
-			const tb_pw = $("#mem_pw").val();			
-			location.href="./login.pj?mem_id="+tb_id+"&mem_pw="+tb_pw;
+			const mem_id = $("#mem_id").val();
+			const mem_pw = $("#mem_pw").val();			
+			location.href="/member/login?mem_id="+mem_id+"&mem_pw="+mem_pw;
 		}
 		
 		function logout(){
@@ -79,8 +73,12 @@
 				//단 List<XXVO>형태라면 그땐 소문자가 맞다
 				
 			   method:"get"
-               ,url:"/member/memberList.pj?type="+type+"&keyword="+keyword // 응답페이지는 JSON포맷의 파일이어야 함 (html이 아니라)
-			
+               ,url:"/member/jsonMemberList?type="+type+"&keyword="+keyword // 응답페이지는 JSON포맷의 파일이어야 함 (html이 아니라)
+			   ,onSelect: function(index, row){
+				   to_id = row.MEM_ID; // 데이터그리드 선택시 해당 로우의 아이디 담기 
+				   to_name = row.MEM_NAME; // 데이터그리드 선택시 해당 로우의 이름 담기
+				   console.log(to_id+", "+to_name);
+			   }
                ,onDblClickCell: function(index,field,value){
            			//console.log(index+", "+field+", "+value);
            			if("BUTTON" == field) {
@@ -102,6 +100,25 @@
 			$("#d_memberInsert").show();
 		}
 		
+		function memoForm() {
+			console.log("memoForm 호출");
+			$("#dlg_memo").dialog({
+				title: "쪽지쓰기",
+				href: "/memo/memoForm.jsp?to_id="+to_id+"&to_name="+to_name,
+				modal: true,
+				closed: true
+			});
+			$("#dlg_memo").dialog('open');
+		}
+		function memoSend() {
+			console.log("쪽지보내기");
+			$("#f_memo").submit();
+		}
+		
+		function memoFormClose(){
+			$('#dlg_memo').dialog('close');
+		}
+		
 	</script>
 	
 </head>
@@ -112,7 +129,9 @@
 	//DOM트리가 그려졌을때 - 준비되었을 때 - ready
 	$(document).ready(function(){	
 		$("#d_member").hide();
-		$("#d_memberInsert").hide();	
+		$("#d_memberInsert").hide();
+		$("#mem_id").textbox('setValue', 'apple');
+		$("#mem_pw").textbox('setValue', '123');
 		
 	});
 </script>
@@ -124,7 +143,7 @@
 			<div style="margin: 10px 0;"></div>
 <%
 	//s_name = "이순신";
-	if(s_name == null){
+	if(smem_name == null){
 %>  			
 <!--################ 로그인 영역 시작 ################-->
 			<div id="d_login" align="center">
@@ -163,7 +182,7 @@
 %>      
 <!--################ 로그아웃 영역 시작 ################-->      
 			 <div id="d_logout" align="center">
-			 	<div id="d_ok"><%=s_name%>님 환영합니다.</div>
+			 	<div id="d_ok"><%=smem_name%>님 환영합니다.</div>
 			 	<div style="margin:3px 0"></div>
 				<a id="btn_logout" href="javascript:logout()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">
 					로그아웃
@@ -178,6 +197,11 @@
 %>
 <!--################ 메뉴 영역 시작 ################-->
     <div style="margin:20px 0;"></div>
+    
+    <%
+    	if(smem_id != null) {
+    %>
+    
     <ul id="tre_gym" class="easyui-tree" style="margin:0 6px;">
         <li data-options="state:'closed'">
             <span>회원관리</span>
@@ -219,6 +243,10 @@
             </ul>
         </li>        
     </ul>
+<%
+    	}
+%>    
+    
     </div>          
 <!--################ 메뉴 영역  끝  ################-->
         <div data-options="region:'center',title:'TerrGYM System',iconCls:'icon-ok'">
@@ -253,7 +281,7 @@
 			        <thead>
 			            <tr>
 			                <th data-options="field:'MEM_ID',width:80">아이디</th>
-			                <th data-options="field:'MEM_BANE',width:100">이름</th>
+			                <th data-options="field:'MEM_NANE',width:100">이름</th>
 			                <th data-options="field:'MEM_ADDRESS',width:300,align:'left'">주소</th>
 			                <th data-options="field:'BUTTON',width:80,align:'center'">버튼</th>
 			            </tr>
@@ -273,6 +301,19 @@
         	
         </div>
     </div>
+    
+    <!-- 우편번호 검색기 다이얼로그 화면 시작 -->   
+	<div id="dlg_memo" footer="#btn_memo" class="easyui-dialog" 
+         title="쪽지쓰기" data-options="modal:true,closed:true" 
+         style="width:600px;height:400px;padding:10px">
+		<div id="btn_memo" align="right">
+			<a href="javascript:memoFormClose()" class="easyui-linkbutton" iconCls="icon-clear">
+				닫기
+			</a>
+		</div>
+	</div>
+	<!-- 우편번호 검색기 다이얼로그 화면  끝 --> 
+    
  
 </body>
 </html>
