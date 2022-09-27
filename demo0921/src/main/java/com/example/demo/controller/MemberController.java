@@ -19,7 +19,8 @@ import com.example.demo.vo.MemberVO;
 
 @Controller
 @RequestMapping("/member/*")
-@SessionAttributes({"smem_id", "smem_name"})
+@SessionAttributes({"smem_id", "smem_name", "s_cnt"})
+
 public class MemberController {
 	Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
@@ -34,7 +35,8 @@ public class MemberController {
 		if(mVO != null) {
 			session.setAttribute("smem_id", mVO.getMem_id());
 			session.setAttribute("smem_name", mVO.getMem_name());
-			//session.setMaxInactiveInterval(30*60); // 세션유지 30분
+			session.setAttribute("s_cnt", mVO.getCount());
+			session.setMaxInactiveInterval(60*60); // 세션유지 60분
 		}
 		return "redirect:/auth/index.jsp";
 	}

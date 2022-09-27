@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.MemberDao;
+import com.example.demo.dao.MemoDao;
 import com.example.demo.vo.MemberVO;
 
 @Service
@@ -17,6 +18,10 @@ public class MemberLogic {
 	
 	@Autowired(required=false)
 	private MemberDao memberDao = null;
+	
+	@Autowired(required=false)
+	private MemoDao memoDao = null;
+	
 	// 등록시에 프로시저를 사용하면 트랜잭션 처리를 따로 하지 않아도 된다
 	public int memberInsert(Map<String, Object> pMap) {
 		logger.info("memberInsert 호출성공");
@@ -28,7 +33,17 @@ public class MemberLogic {
 	public MemberVO login(Map<String, Object> pMap) {
 		logger.info("login 호출성공");
 		MemberVO mVO = null;
+		// 읽지 않은 쪽지 담기
+		int cnt = 0;
 		mVO = memberDao.login(pMap);
+		// 로그인 성공한거야?
+		if(mVO != null) {
+			String to_id = null;
+			to_id = mVO.getMem_id();
+			pMap.put("to_id", to_id);
+			cnt = memoDao.noReadMemo(pMap);
+			mVO.setCount(cnt);
+		}
 		return mVO;
 	}
 	

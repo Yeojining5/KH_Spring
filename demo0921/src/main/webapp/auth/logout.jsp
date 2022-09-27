@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 <%
 	session.invalidate();
-	response.sendRedirect("/auth/index.jsp");
+	response.sendRedirect("./index.jsp");
 %>

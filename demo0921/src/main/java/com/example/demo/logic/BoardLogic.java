@@ -13,8 +13,10 @@ import com.example.demo.dao.BoardDao;
 @Service
 public class BoardLogic {
 	Logger logger = LogManager.getLogger(BoardLogic.class);		
+	
 	@Autowired(required=false)
 	private BoardDao boardDao = null;
+	
 	//로직에서는 그대로 모두 사용함 - RequestParam이나 RequestMapping, Model모두 필요없음
 	//공통된 관심사는 트랜잭션 처리 - 하나의 메소드에서 Dao에 두 개 메소드 호출
 	//board_master_t, board_sub_t

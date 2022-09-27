@@ -39,7 +39,7 @@
 			
 			<div class="form-example">
 				<label for="memo_content">내  용</label>
-				<input id="memo_content" name="memo_content" multiline="true" class="easyui-textbox" style="width:100px,height:40px"/>
+				<input id="memo_content" name="memo_content" multiline="true" class="easyui-textbox" style="width:300px;height:70px"/>
 			</div>
 			
 		</form>

@@ -3,10 +3,13 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +25,16 @@ Logger logger = LoggerFactory.getLogger(MemoController.class);
 	@Autowired(required=false)
 	private MemoLogic memoLogic = null;
 	
+	
+	@GetMapping("memoContent")
+	public String memoContent(Model model, @RequestParam Map<String,Object> pMap) {
+		Map<String,Object> rMap = null;
+		rMap = memoLogic.memoContent(pMap);
+		model.addAttribute("rMap", rMap);
+		//@RestController, @ResponseBody
+		return "forward:/memo/memoContent.jsp";
+	}
+	
 	@GetMapping("memoInsert")
 	public String memoInsert(@RequestParam Map<String,Object> pMap) {
 		logger.info("memoInsert 호출성공 : "+pMap);
@@ -31,20 +44,20 @@ Logger logger = LoggerFactory.getLogger(MemoController.class);
 	}
 	
 	@GetMapping("sendMemoList")
-	public String sendMemoList(@RequestParam Map<String,Object> pMap) {
+	public String sendMemoList(Model model, @RequestParam Map<String,Object> pMap) {
 		logger.info("sendMemoList 호출성공 : "+pMap);
 		List<Map<String,Object>> sendMemoList = null;
-		String temp = null;
 		sendMemoList = memoLogic.sendMemoList(pMap);
+		model.addAttribute("sendMemoList", sendMemoList);
 		//@RestController, @ResponseBody
-		return "redirect:/memo/jsonSendMemoList.jsp";
+		return "forward:/memo/jsonSendMemoList.jsp";
 	}
 	@GetMapping("receiveMemoList")
-	public String receiveMemoList(@RequestParam Map<String,Object> pMap) {
+	public String receiveMemoList(HttpSession session, Model model, @RequestParam Map<String,Object> pMap) {
 		logger.info("receiveMemoList 호출성공 : "+pMap);
 		List<Map<String,Object>> receiveMemoList = null;
-		String temp = null;
-		receiveMemoList = memoLogic.receiveMemoList(pMap);
-		return "redirect:/memo/jsonSendMemoList.jsp";
+		receiveMemoList = memoLogic.receiveMemoList(pMap, session);
+		model.addAttribute("receiveMemoList", receiveMemoList);
+		return "forward:/memo/jsonReceiveMemoList.jsp";
 	}
 }
