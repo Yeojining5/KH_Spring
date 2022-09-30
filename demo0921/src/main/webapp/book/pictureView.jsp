@@ -15,7 +15,20 @@
 	
 	function makeInfo(result) {
 		console.log(result);
+		// JSON.stringify는 왜 안써? - 이미 문자열인데...
+		// 그럼 나는 언제 사용? 넌 object로 출력될때만...
+		const jsonDoc = JSON.parse(result); // Array 변환
 		let picHTML ="";
+		if(jsonDoc.length > 0){ //조회결과가 있니?
+			for(let i=0; i<jsonDoc.length; i++){
+				picHTML += "<table>";
+				picHTML += "<tr><td><img width='100' height='100' src='/images/"+jsonDoc[i].p_img+"'/></td>";
+				picHTML += "<td>"+jsonDoc[i].p_info+"</td></tr>"
+				picHTML += "<table>";
+			}
+		} else {
+			picHTML += "조회결과가 없습니다.";
+		}
 		return picHTML;
 	}
 
@@ -27,8 +40,11 @@
 			   console.log(result);//JSON -> List<Map> -> String(java코드) -> JS
 			   	// -> JSON.stringyfy, JSON.parse -> Array형전환
 			   let picHTML = makeInfo(result);
-			   	// 화면에 렌더링되기 저네 스타일 처리 선행되어야 함.
-			   	$("d_detail").html(picHTML);
+			   	// 화면에 렌더링되기 전에 스타일 처리 선행되어야 함.
+			    $("#d_detail").css("border", "1px dotted #b0e0e6");
+			   	$("#d_detail").css("left", td.offsetWidth+85+"px");
+			   	$("#d_detail").css("top", td.offsetTop+20+"px");
+			   	$("#d_detail").html(picHTML);
 			  }//end of success
 			 ,error:function(e){
 				 $("#d_search").text(e.responseText);//에러메시지 출력됨 - 힌트 - 디버깅
