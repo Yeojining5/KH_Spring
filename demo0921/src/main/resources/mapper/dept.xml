@@ -5,11 +5,31 @@
 	<!-- 
 		{key:[{DeptVO},{DeptVO},{DeptVO}]}  -> 이런식으로 찍힐 것이다
 	 -->
-	<select id="deptList" parameterType="map" resultType="map" statementType="CALLABLE">
+	 <select id="deptList" parameterType="map" resultType="java.util.Map">
+		SELECT deptno, dname, loc, filename, fileurl
+		  FROM dept
+		<where>
+	  		<if test='deptno != null'>
+			 and deptno = #{deptno}
+	  		</if>
+			<if test='gubun!=null and gubun.equals("deptno")'>
+				AND deptno = #{keyword}
+			</if>	 
+			<if test='gubun!=null and gubun.equals("dname")'>
+				AND dname LIKE '%'||#{keyword}||'%'
+			</if>	 
+			<if test='gubun!=null and gubun.equals("loc")'>
+				AND loc LIKE '%'||#{keyword}||'%'
+			</if>		  		
+		</where>
+  		ORDER BY deptno asc 		 
+	</select>
+	 
+	<select id="deptList2" parameterType="map" resultType="map" statementType="CALLABLE">
 		{CALL proc_deptlist(#{deptno, mode=IN},#{key, jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=deptMap})}
 	</select>
 
     <insert id="deptInsert" parameterType="map">
-    	INSERT INTO dept(deptno,dname,loc) VALUES(#{deptno},#{dname},#{loc})
+    	INSERT INTO dept(deptno,dname,loc,fileurl,filename) VALUES(#{deptno},#{dname},#{loc},#{fileurl},#{filename})
     </insert>
 </mapper>	

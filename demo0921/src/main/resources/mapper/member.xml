@@ -11,6 +11,7 @@
       {CALL proc_memberinsert(#{mem_id, mode=IN},#{mem_pw, mode=IN},#{mem_name, mode=IN},#{mem_zipcode, mode=IN}
       ,#{mem_address, mode=IN},#{result, jdbcType=NUMERIC, mode=OUT, javaType=int})}
    </select>
+   
    <select id="memberList" parameterType="map" resultType="map">
       SELECT mem_no, mem_id, mem_pw, mem_name, mem_zipcode, mem_address
            ,<![CDATA['<a href="javascript:memoForm()">쪽지쓰기</a>']]> as button
