@@ -15,8 +15,10 @@ import com.example.demo.vo.DeptVO;
 @Service
 public class DeptDao {
    Logger logger = LogManager.getLogger(DeptDao.class);
+   
    @Autowired
    private SqlSessionTemplate sqlSessionTemplate = null;
+   
    public List<Map<String, Object>> deptList(Map<String, Object> pMap) {
       logger.info(pMap.get("deptno"));
       List<Map<String, Object>> deptList = null;
@@ -24,6 +26,7 @@ public class DeptDao {
       logger.info("pMap : "+pMap);
       return deptList;
    }
+   
    public List<DeptVO> deptList2(Map<String, Object> pMap) {
       logger.info(pMap.get("deptno"));
       List<DeptVO> deptList = null;
@@ -36,7 +39,8 @@ public class DeptDao {
       }
       return deptList;
    }
-public int deptInsert(Map<String, Object> pMap) {
+   
+   public int deptInsert(Map<String, Object> pMap) {
 	int result = 0;
     result = sqlSessionTemplate.update("deptInsert",pMap);
 	return result;

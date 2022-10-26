@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BoardDao {
 	Logger logger = LoggerFactory.getLogger(BoardDao.class);	
+	
 	@Autowired(required=false)
 	private SqlSessionTemplate sqlSessionTemplate = null;
 

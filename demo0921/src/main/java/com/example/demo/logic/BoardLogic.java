@@ -78,6 +78,7 @@ public class BoardLogic {
 		}
 		return result;
 	}
+	
 	public int boardUpdate(Map<String, Object> pMap) {
 		int result = 0;
 		result = boardDao.boardMUpdate(pMap);

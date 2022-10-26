@@ -3,6 +3,7 @@ package com.example.demo;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,10 @@ public class DatabaseConfiguration {
         factoryBean.setDataSource(dataSource);
         //factoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis/config/mybatis-config.xml"));
         factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mapper/**/*.xml"));
+        
+        SqlSessionFactory sqlSessionFactory = factoryBean.getObject(); 
+        sqlSessionFactory.getConfiguration().setJdbcTypeForNull(JdbcType.NULL); 
+        
         return factoryBean.getObject();
     }
 	
